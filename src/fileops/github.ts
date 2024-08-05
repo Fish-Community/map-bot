@@ -9,10 +9,10 @@ const octokit = new Octokit({
 /***
  * wrapper for getFileList(), returns a markdown formatted string listing file information
  */
-export async function getFileListClean(gamemode: string){
+export async function getFileListClean(gamemode: string) {
     //TODO escape markdown
     return (await getFileList(gamemode)).map(file => {
-        if(file.download_url) return `- [${file.name}](${file.download_url})`;
+        if (file.download_url) return `- [${file.name}](${file.download_url})`;
         else return `- ${file.name}`;
     }).join("\n");
 }
@@ -26,7 +26,7 @@ async function getFileList(path = ''): Promise<{ name: string, download_url: str
         path: path,
         ref: config.github.branch,
     });
-    if(!Array.isArray(repoContents)) crash(`Unexpected GH API response`);
+    if (!Array.isArray(repoContents)) crash(`Unexpected GH API response`);
     const files = await Promise.all(repoContents.map(async file => {
         if (file.type === 'dir') {
             return [{ name: "INVALID_TYPE_FOLDER", download_url: null, sha: null }]
@@ -39,7 +39,7 @@ async function getFileList(path = ''): Promise<{ name: string, download_url: str
 /**
  * Fetches file info from the github repository given a filename
  */
-async function getFile(gamemode: Gamemode, filename: string){
+async function getFile(gamemode: Gamemode, filename: string) {
     const owner = config.github.owner;
     const repo = config.github.repo
     const path = `${gamemodePaths[gamemode]}/${filename}`;
@@ -83,9 +83,9 @@ export async function addFileAttached(file: Attachment, gamemode: Gamemode, file
  * Uploads buffered data to github
  */
 export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename: string) {
-    let sha:string | undefined;
+    let sha: string | undefined;
     try {
-        sha = (await getFile(gamemode,filename)).sha;
+        sha = (await getFile(gamemode, filename)).sha;
         console.info(`Updating file ${filename}`);
     } catch {
         console.info(`Creating new file ${filename}`);
@@ -107,18 +107,18 @@ export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename
  * Addmap but required to override a exsisting file 
  */
 export async function updateFileAttached(file: Attachment, gamemode: Gamemode, filename: string): Promise<void> {
-    if(!filenameRegex.test(filename)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
-    if(!await getFile(gamemode, filename)) fail(`Unknown map ${filename}, if this is a new map, please upload it with /add_map`);
+    if (!filenameRegex.test(filename)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
+    if (!await getFile(gamemode, filename)) fail(`Unknown map ${filename}, if this is a new map, please upload it with /add_map`);
     await addFileAttached(file, gamemode, filename);
 }
 /***
  * Alter a github file's name
  */
 export async function renameFile(gamemode: Gamemode, oldName: string, newName: string) {
-    if(!filenameRegex.test(newName)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
-    if(!filenameRegex.test(oldName)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
+    if (!filenameRegex.test(newName)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
+    if (!filenameRegex.test(oldName)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
     let res = await getFile(gamemode, oldName);
-    if(!res.download_url) fail(`Download URL missing`);
+    if (!res.download_url) fail(`Download URL missing`);
     let contents = await downloadFile(res.download_url);
     await addFileBuffered(contents, gamemode, newName);
     await deleteFile(gamemode, oldName);
