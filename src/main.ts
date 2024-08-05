@@ -24,6 +24,7 @@ const commands = {
 Object.setPrototypeOf(commands, null); //safety
 
 client.on('interactionCreate', async (interaction) => {
+	if(interaction.guildId !== config.discord.guildID) return; //Only allow running commands in the configured server
 	if (interaction.isCommand()) {
 		const handler = getProp(commands, interaction.commandName);
 		if (handler) {
