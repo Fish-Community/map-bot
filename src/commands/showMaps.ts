@@ -2,10 +2,11 @@ import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import config, { gamemodePath } from "../config.js";
 import { getFileListClean } from '../fileops/github.js'
 import { splitReply } from '../utils.js';
+import { isGamemode } from '../types.js';
 
 export async function maps(interaction: CommandInteraction) {
-    const gamemode = interaction.options.get('gamemode')?.value as string;
-    if(gamemode && config.github.paths.hasOwnProperty(gamemode.toLowerCase())){
+    const gamemode = interaction.options.get('gamemode')!.value as string;
+    if(isGamemode(gamemode)){
         let gameModeMaps = await getFileListClean(gamemodePath[gamemode])
         splitReply(interaction, `** Fish ${gamemode} Maps** \n ${gameModeMaps}`);
     }else{

@@ -1,6 +1,7 @@
 import config, { gamemodePath } from "../config.js";
 import { Octokit } from "@octokit/rest";
 import { Attachment } from "discord.js";
+import { isGamemode } from "../types.js";
 
 const octokit = new Octokit({
     auth: config.github.key,
@@ -9,6 +10,7 @@ const octokit = new Octokit({
  * wrapper for getFileList(), returns a markdown formatted string listing file information
  */
 export async function getFileListClean(gamemode: string): Promise<string> {
+    if (!isGamemode(gamemode)) throw new Error(`Invalid gamemode ${gamemode}`)
     let rawData = null
     try{
         rawData = await getFileList(gamemode)
@@ -57,11 +59,9 @@ async function getFileList(path = ''): Promise<{ name: string, download_url: str
  */
 async function getFile(gamemode: string, filename: string): Promise<{ name: string, download_url: string | null, sha: string | null }> {
     try {
-        if (!config.github.paths.hasOwnProperty(gamemode)) {
-            throw new Error(`Invalid gamemode ${gamemode}`)
-        }
+        if (!isGamemode(gamemode)) throw new Error(`Invalid gamemode ${gamemode}`)
         const owner = config.github.owner;
-        const repo = config.github.repo
+        const repo = gamemodePath[gamemode]
         const path = gamemodePath[gamemode] + "/" + filename;
         const branch = config.github.branch;
         const res = await octokit.rest.repos.getContent({ owner, repo, path, ref: branch });
@@ -85,8 +85,10 @@ async function getFileContents(url: string): Promise<Buffer> {
 export async function deleteFile(gamemode: string, filename: string): Promise<void> {
     try {
         if (!/^[^/\\]*\.msav$/.test(filename)) throw new Error(`Map files cannot include \"\\\" or \"/\" and must end in \".msav\"`)
+        if (!isGamemode(gamemode)) throw new Error(`Invalid gamemode ${gamemode}`);
         let file = await getFile(gamemode, filename);
         if (!file || !file.sha) throw new Error(`Failed to fetch file`);
+        
         await octokit.rest.repos.deleteFile({
             owner: config.github.owner,
             repo: config.github.repo,
@@ -106,6 +108,7 @@ export async function deleteFile(gamemode: string, filename: string): Promise<vo
  */
 export async function addFileAttached(file: Attachment | undefined, gamemode: string, filename: string) {
     try {
+        if (!isGamemode(gamemode)) throw new Error(`Invalid gamemode ${gamemode}`)
         if (file === undefined) throw new Error(`NULL file attached`) //how?
         if (!/^[A-Za-z]+\.msav/.test(filename)) throw new Error(`Invalid file name. Files must end in .msav and use only letters`) // for convinence, I hate special chars
         let data = await getFileContents(file.url);
@@ -119,6 +122,7 @@ export async function addFileAttached(file: Attachment | undefined, gamemode: st
  */
 export async function addFileBuffered(data: Buffer, gamemode: string, filename: string) {
     try {
+        if (!isGamemode(gamemode)) throw new Error(`Invalid gamemode ${gamemode}`)
         let sha:string | null = null;
         try {
             sha = (await getFile(gamemode,filename)).sha
@@ -147,6 +151,7 @@ export async function addFileBuffered(data: Buffer, gamemode: string, filename: 
  */
 export async function updateFileAttached(file: Attachment | undefined, gamemode: string, filename: string): Promise<void> {
     try {
+        if (!isGamemode(gamemode)) throw new Error(`Invalid gamemode ${gamemode}`)
         if (!/^[^/\\]*\.msav$/.test(filename)) throw new Error(`Map files cannot include \"\\\" or \"/\" and must end in \".msav\"`)
         if (file === undefined) throw new Error(`Attached file is undefined.`)
         if (! await getFile(gamemode, filename)) throw new Error(`Unknown map ${filename}, if this is a new map, please upload it with /add_map`);
@@ -160,6 +165,7 @@ export async function updateFileAttached(file: Attachment | undefined, gamemode:
  */
 export async function renameFile(gamemode: string, oldName: string, newName: string) {
     try {
+        if (!isGamemode(gamemode)) throw new Error(`Invalid gamemode ${gamemode}`)
         if (!/^[A-Za-z]+\.msav/.test(newName)) throw new Error(`Invalid new file name. Files must end in .msav and use only letters`)
         let res = await getFile(gamemode, oldName);
         if (!res || !res.download_url) throw new Error(`Cannot download file ${oldName}`);
