@@ -1,0 +1,19 @@
+{
+    "discord": {
+        "token": "INSERT_BOT_TOKEN",
+        "appID" : "INSERT_APP_ID",
+        "guildID" : "INSERT_GUILD_ID"
+    },
+    "github" : {
+        "owner" : "INSERT_REPO_OWNER",
+        "key" : "INSERT_DISCORD_KEY",
+        "repo" : "INSERT_REPO_NAME",
+        "paths" :{
+            "attack" : "attack",
+            "survival" : "survival",
+            "pvp" : "pvp",
+            "hexed" : "hexed"
+        },
+        "branch" : "INSERT_REPO_BRANCH"
+    }
+}
