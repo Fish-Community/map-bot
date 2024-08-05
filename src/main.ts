@@ -1,9 +1,9 @@
 import { Client, GatewayIntentBits } from 'discord.js';
-import config from '../config.json' assert {type : 'json'}
+import config from '../config.json' assert {type: 'json'};
 
 import { ping } from './commands/ping.js';
 import { maps } from './commands/showMaps.js'
-import {addmap} from './commands/addMap.js';
+import { addmap } from './commands/addMap.js';
 import { deletemap } from './commands/deleteMap.js';
 import { registerCommands } from './commands.js';
 import { renameMap } from './commands/renameMap.js';

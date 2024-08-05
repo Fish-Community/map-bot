@@ -8,15 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@discordjs/rest':
+        specifier: ^2.3.0
+        version: 2.3.0
       '@octokit/rest':
         specifier: ^21.0.1
         version: 21.0.1
-      '@types/form-data':
-        specifier: ^2.5.0
-        version: 2.5.0
       axios:
         specifier: ^1.7.2
         version: 1.7.3
+      discord-api-types:
+        specifier: ^0.37.93
+        version: 0.37.93
       discord.js:
         specifier: ^14.15.3
         version: 14.15.3
@@ -154,10 +157,6 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
-  '@types/form-data@2.5.0':
-    resolution: {integrity: sha512-23/wYiuckYYtFpL+4RPWiWmRQH2BjFuqCUi2+N3amB1a1Drv+i/byTrGvlLwRVLFNAZbwpbQ7JvTK+VCAPMbcg==}
-    deprecated: This is a stub types definition. form-data provides its own type definitions, so you do not need this installed.
-
   '@types/node@22.1.0':
     resolution: {integrity: sha512-AOmuRF0R2/5j1knA3c6G3HOk523Ga+l+ZXltX8SF1+5oqcXijjfTd8fY3XRZqSihEu9XhtQnKYLmkFaoxgsJHw==}
 
@@ -206,6 +205,9 @@ packages:
 
   discord-api-types@0.37.83:
     resolution: {integrity: sha512-urGGYeWtWNYMKnYlZnOnDHm8fVRffQs3U0SpE8RHeiuLKb/u92APS8HoQnPTFbnXmY1vVnXjXO4dOxcAn3J+DA==}
+
+  discord-api-types@0.37.93:
+    resolution: {integrity: sha512-M5jn0x3bcXk8EI2c6F6V6LeOWq10B/cJf+YJSyqNmg7z4bdXK+Z7g9zGJwHS0h9Bfgs0nun2LQISFOzwck7G9A==}
 
   discord.js@14.15.3:
     resolution: {integrity: sha512-/UJDQO10VuU6wQPglA4kz2bw2ngeeSbogiIPx/TsnctfzV/tNf+q+i1HlgtX1OGpeOBpJH9erZQNO5oRM2uAtQ==}
@@ -444,10 +446,6 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
-  '@types/form-data@2.5.0':
-    dependencies:
-      form-data: 4.0.0
-
   '@types/node@22.1.0':
     dependencies:
       undici-types: 6.13.0
@@ -489,6 +487,8 @@ snapshots:
   diff@4.0.2: {}
 
   discord-api-types@0.37.83: {}
+
+  discord-api-types@0.37.93: {}
 
   discord.js@14.15.3:
     dependencies:
