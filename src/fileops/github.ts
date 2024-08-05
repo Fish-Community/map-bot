@@ -11,7 +11,12 @@ const octokit = new Octokit({
  * wrapper for getFileList(), returns a markdown formatted string listing file information
  */
 export async function getFileListClean(gamemode: string): Promise<string> {
-    let rawData = await getFileList(gamemode);
+    let rawData = null
+    try{
+        rawData = await getFileList(gamemode)
+    }catch{
+        return "\n";
+    }
     let buffer = ""
     for (let Data of rawData) {
         if (Data.download_url) {
@@ -104,7 +109,6 @@ export async function deleteFile(gamemode: string, filename: string): Promise<vo
 export async function addFileAttached(file: Attachment | undefined, gamemode: string, filename: string) {
     try {
         if (file === undefined) throw new Error(`NULL file attached`) //how?
-        
         if (!/^[A-Za-z]+\.msav/.test(filename)) throw new Error(`Invalid file name. Files must end in .msav and use only letters`) // for convinence, I hate special chars
         let data = await getFileContents(file.url);
         addFileBuffered(data, gamemode, filename);

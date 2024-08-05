@@ -8,7 +8,13 @@ const octokit = new Octokit({
  * wrapper for getFileList(), returns a markdown formatted string listing file information
  */
 export async function getFileListClean(gamemode) {
-    let rawData = await getFileList(gamemode);
+    let rawData = null;
+    try {
+        rawData = await getFileList(gamemode);
+    }
+    catch {
+        return "\n";
+    }
     let buffer = "";
     for (let Data of rawData) {
         if (Data.download_url) {
@@ -140,7 +146,7 @@ export async function addFileBuffered(data, gamemode, filename) {
             message: `Automatic Upload ${filename}`,
             branch: config.github.branch,
             content: data.toString('base64'),
-            sha: (sha) ? (sha) : (undefined)
+            sha: (sha) ? (sha) : (undefined) // cursed null to undefined cast
         });
         console.log(`Uploaded ${filename} to server`);
     }
