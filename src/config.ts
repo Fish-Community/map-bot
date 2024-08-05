@@ -1,19 +1,23 @@
+import rawConfig from '../config.json' assert {type: 'json'};
 
-
-declare module "*config.json" {
-	export const value: {
-		"discord": {
-			"token": string;
-			"appID": string;
-			"guildID": string;
-		}
-		"github": {
-			"owner": string;
-			"key": string;
-			"repo": string;
-			"paths": Record<"attack" | "survival" | "pvp" | "hexed", string>;
-			"branch": "map-bot-tests";
-		}
-	};
-	export default value;
+export const config = {
+	"discord": {
+		"token": String(rawConfig.discord.token),
+		"appID": String(rawConfig.discord.appID),
+		"guildID": String(rawConfig.discord.guildID),
+	},
+	"github": {
+		"owner": String(rawConfig.github.owner),
+		"key": String(rawConfig.github.key),
+		"repo": String(rawConfig.github.repo),
+		"paths": {
+			"attack": String(rawConfig.github.paths.attack),
+			"survival": String(rawConfig.github.paths.survival),
+			"pvp": String(rawConfig.github.paths.pvp),
+			"hexed": String(rawConfig.github.paths.hexed),
+		},
+		"branch": String(rawConfig.github.branch),
+	}
 }
+export const gamemodePath = config.github.paths;
+export default config;

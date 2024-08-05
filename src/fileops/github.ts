@@ -1,8 +1,6 @@
-import config from "../../config.json" assert {type: 'json'}
+import config, { gamemodePath } from "../config.js";
 import { Octokit } from "@octokit/rest";
-import { Gamemode } from "../utils/mindustryTypes.js";
 import { Attachment } from "discord.js";
-import { error } from "console";
 
 const octokit = new Octokit({
     auth: config.github.key,
@@ -64,7 +62,7 @@ async function getFile(gamemode: string, filename: string): Promise<{ name: stri
         }
         const owner = config.github.owner;
         const repo = config.github.repo
-        const path = Gamemode[gamemode] + "/" + filename;
+        const path = gamemodePath[gamemode] + "/" + filename;
         const branch = config.github.branch;
         const res = await octokit.rest.repos.getContent({ owner, repo, path, ref: branch });
         const fileData = Array.isArray(res.data) ? res.data[0] : res.data;
@@ -92,7 +90,7 @@ export async function deleteFile(gamemode: string, filename: string): Promise<vo
         await octokit.rest.repos.deleteFile({
             owner: config.github.owner,
             repo: config.github.repo,
-            path: Gamemode[gamemode] + "/" + filename,
+            path: gamemodePath[gamemode] + "/" + filename,
             message: `Automated Deletion ${filename}`,
             sha: file.sha,
             branch: config.github.branch
@@ -133,7 +131,7 @@ export async function addFileBuffered(data: Buffer, gamemode: string, filename: 
         await octokit.repos.createOrUpdateFileContents({
             owner: config.github.owner,
             repo: config.github.repo,
-            path: Gamemode[gamemode] + "/" + filename,
+            path: gamemodePath[gamemode] + "/" + filename,
             message: `Automatic Upload ${filename}`,
             branch: config.github.branch,
             content: data.toString('base64'),

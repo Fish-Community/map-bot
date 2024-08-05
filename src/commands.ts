@@ -1,7 +1,7 @@
 
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import config from '../config.json' assert {type:'json'};
+import config from './config.js';
 
 import { pingCommand } from './commands/ping.js';
 import { showMapCommand } from './commands/showMaps.js';
