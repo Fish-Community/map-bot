@@ -10,6 +10,7 @@ import { deleteMapCommand } from './commands/deleteMap.js';
 import { renameMapCommand } from './commands/renameMap.js';
 import { updateMapCommand } from './commands/updatemap.js';
 import { crash } from './utils.js';
+import { CommandInteraction, GuildMember, GuildMemberRoleManager } from 'discord.js';
 
 const commands = [
 	pingCommand,
@@ -38,4 +39,13 @@ export async function registerCommands() {
 	);
 
 	console.log('Successfully reloaded application (/) commands.');
+}
+export function checkPerm(interaction:CommandInteraction):boolean{
+	let member:GuildMember = interaction.member as GuildMember;
+	if(member!.roles instanceof GuildMemberRoleManager){
+		return(member.roles.cache.has(config.discord.roleID))
+	}else{
+		console.error(`Out-Of-Date discord.js, please use v13+`);
+		return (false);
+	}
 }

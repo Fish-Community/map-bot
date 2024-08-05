@@ -1,19 +1,20 @@
 {
     "discord": {
-        "token": "INSERT_BOT_TOKEN",
-        "appID" : "INSERT_APP_ID",
-        "guildID" : "INSERT_GUILD_ID"
+	    "token": "placeholder",
+        "appID" : "placeholder",
+        "guildID" : "placeholder",
+        "roleID" : "placeholder"
     },
     "github" : {
-        "owner" : "INSERT_REPO_OWNER",
-        "key" : "INSERT_DISCORD_KEY",
-        "repo" : "INSERT_REPO_NAME",
+        "owner" : "Jurorno9",
+        "key" : "placeholder",
+        "repo" : "Fish_Maps",
         "paths" :{
             "attack" : "attack",
             "survival" : "survival",
             "pvp" : "pvp",
             "hexed" : "hexed"
         },
-        "branch" : "INSERT_REPO_BRANCH"
+        "branch" : "map-bot-tests"
     }
 }
