@@ -19,7 +19,7 @@ client.once('ready', () => {
 
 client.on('interactionCreate', async (interaction) => {
     if (interaction.isCommand()){
-    const { commandName, options } = interaction;
+    const { commandName } = interaction;
     switch (commandName) {
         case 'ping':
             await ping(interaction);

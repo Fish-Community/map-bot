@@ -1,17 +1,15 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { renameFile } from "../fileops/github.js";
-import { Gamemode, gamemodeOption } from "../utils.js";
+import { Gamemode, gamemodeOption, runFunction } from "../utils.js";
 
 export async function renameMap(interaction:CommandInteraction){
     const gamemode = Gamemode(interaction.options.get('gamemode')!.value as string);
     const old_name = interaction.options.get('old_filename')!.value as string;
     const new_name = interaction.options.get('new_filename')!.value as string;
-    try{
-        await renameFile(gamemode, old_name, new_name);
-        interaction.reply(`Successfully renamed ${old_name} to ${new_name}`);
-    }catch(error){
-        interaction.reply(`Failed to rename file : ${error}`);
-    }
+    await runFunction(interaction,
+        () => renameFile(gamemode, old_name, new_name),
+        `Successfully renamed map "${old_name}" to "${new_name}"`
+    );
 }
 
 

@@ -1,7 +1,7 @@
 import config, { gamemodePaths } from "../config.js";
 import { Octokit } from "@octokit/rest";
 import { Attachment } from "discord.js";
-import { crash, fail, Gamemode } from "../utils.js";
+import { crash, fail, filenameRegex, Gamemode } from "../utils.js";
 
 const octokit = new Octokit({
     auth: config.github.key,
@@ -49,7 +49,7 @@ async function getFile(gamemode: Gamemode, filename: string){
     if (fileData.type !== 'file' || !fileData.sha) fail(`File not found (SHA)`);
     return { name: fileData.name, download_url: fileData.download_url, sha: fileData.sha };
 }
-async function getFileContents(url: string): Promise<Buffer> {
+async function downloadFile(url: string): Promise<Buffer> {
     let res = await fetch(url);
     let arrayRes = await res.arrayBuffer();
     return Buffer.from(arrayRes);
@@ -73,11 +73,11 @@ export async function deleteFile(gamemode: Gamemode, filename: string): Promise<
 /**
  * Upload a discord attachment to github
  */
-export async function addFileAttached(file: Attachment | undefined, gamemode: Gamemode, filename: string) {
-    if (file === undefined) fail(`NULL file attached`) //how?
-    if (!/^[A-Za-z]+\.msav/.test(filename)) fail(`Invalid file name. Files must end in .msav and use only letters`) // for convinence, I hate special chars
-    let data = await getFileContents(file.url);
-    addFileBuffered(data, gamemode, filename);
+export async function addFileAttached(file: Attachment, gamemode: Gamemode, filename: string) {
+    if (!filenameRegex.test(filename))
+        fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
+    let data = await downloadFile(file.url);
+    await addFileBuffered(data, gamemode, filename);
 }
 /**
  * Uploads buffered data to github
@@ -106,20 +106,20 @@ export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename
 /**
  * Addmap but required to override a exsisting file 
  */
-export async function updateFileAttached(file: Attachment | undefined, gamemode: Gamemode, filename: string): Promise<void> {
-    if (!/^[^/\\]*\.msav$/.test(filename)) fail(`Map files cannot include "\\" or "/" and must end in ".msav"`)
-    if (file === undefined) fail(`Attached file is undefined.`)
-    if (! await getFile(gamemode, filename)) fail(`Unknown map ${filename}, if this is a new map, please upload it with /add_map`);
+export async function updateFileAttached(file: Attachment, gamemode: Gamemode, filename: string): Promise<void> {
+    if(!filenameRegex.test(filename)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
+    if(!await getFile(gamemode, filename)) fail(`Unknown map ${filename}, if this is a new map, please upload it with /add_map`);
     await addFileAttached(file, gamemode, filename);
 }
 /***
  * Alter a github file's name
  */
 export async function renameFile(gamemode: Gamemode, oldName: string, newName: string) {
-    if (!/^[A-Za-z]+\.msav/.test(newName)) fail(`Invalid new file name. Files must end in .msav and use only letters`)
+    if(!filenameRegex.test(newName)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
+    if(!filenameRegex.test(oldName)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
     let res = await getFile(gamemode, oldName);
-    if (!res || !res.download_url) fail(`Cannot download file ${oldName}`);
-    let contents = await getFileContents(res.download_url);
+    if(!res.download_url) fail(`Download URL missing`);
+    let contents = await downloadFile(res.download_url);
     await addFileBuffered(contents, gamemode, newName);
     await deleteFile(gamemode, oldName);
 }

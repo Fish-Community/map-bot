@@ -1,4 +1,6 @@
-import { CommandInteraction, SlashCommandStringOption } from "discord.js";
+import type { CommandInteraction, SlashCommandStringOption } from "discord.js";
+
+export const filenameRegex = /^[A-Za-z_-]+\.msav/;
 
 export async function splitReply(interaction: CommandInteraction, message: string) {
     const maxInitialLength = 2000;
@@ -47,6 +49,19 @@ export function Gamemode(input:string):Gamemode {
     input = input.toLowerCase();
     if(gamemodes.includes(input)) return input;
     fail(`"${input}" is not a valid gamemode`);
+}
+
+export function runFunction(interaction:CommandInteraction, callback:() => Promise<unknown>, successMessage:string){
+    return callback()
+        .then(() => interaction.reply(successMessage))
+        .catch(err => {
+            if(err instanceof Fail){
+                return interaction.reply(`Error: ${err.message}`);
+            } else {
+                console.error(err);
+                return interaction.reply(`__Bot crashed!:__ ${err.toString()}`);
+            }
+        })
 }
 
 export const gamemodeChoices = [

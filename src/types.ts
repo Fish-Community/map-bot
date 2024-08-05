@@ -6,5 +6,6 @@ declare global {
 	}
 	interface ReadonlyArray<T> {
 		includes(input:unknown, fromIndex?:number):input is T;
+		map<TThis extends ReadonlyArray<T>, U>(this:TThis, callbackfn: (value: T, index: number, array: TThis) => U, thisArg?: any): number extends TThis["length"] ? readonly U[] : { [K in keyof TThis]: U };
 	}
 }

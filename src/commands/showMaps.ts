@@ -7,13 +7,22 @@ export async function maps(interaction: CommandInteraction) {
     const gamemode = interaction.options.get('gamemode')?.value as string;
     if(gamemodes.includes(gamemode)){
         let gameModeMaps = await getFileListClean(gamemodePaths[gamemode])
-        splitReply(interaction, `** Fish ${gamemode} Maps** \n ${gameModeMaps}`);
+        await splitReply(interaction, `## Fish ${gamemode} Maps\n${gameModeMaps}`);
     }else{
-        let attackMaps = await getFileListClean(gamemodePaths['attack']);
-        let survivalMaps = await getFileListClean(gamemodePaths['survival']);
-        let pvpMaps = await getFileListClean(gamemodePaths['pvp']);
-        let hexedMaps = await getFileListClean(gamemodePaths['hexed']);
-        splitReply(interaction, `## Fish Server Maps\n** Attack Maps**\n${attackMaps}** Survival Maps**\n${survivalMaps}** PvP Maps**\n${pvpMaps}** Hexed Maps**\n${hexedMaps}`);
+        const [attackMaps, survivalMaps, pvpMaps, hexedMaps] = await Promise.all(
+            gamemodes.map(n => getFileListClean(gamemodePaths[n]))
+        );
+        await splitReply(interaction,
+`## Fish Server Maps
+### Attack Maps
+${attackMaps}
+### Survival Maps
+${survivalMaps}
+### PvP Maps
+${pvpMaps}
+### Hexed Maps
+${hexedMaps}`
+        );
     }
     
 }
