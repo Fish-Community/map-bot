@@ -25,12 +25,12 @@ Object.setPrototypeOf(commands, null); //safety
 
 client.on('interactionCreate', async (interaction) => {
   if (interaction.isCommand()){
-    const handler = getProp(commands, interaction.commandName);
-    if(handler){
-      await handler(interaction);
-    } else {
-      console.error(`Unknown interation ${interaction.commandName} occured.`)
-    }
+	const handler = getProp(commands, interaction.commandName);
+	if(handler){
+	  await handler(interaction);
+	} else {
+	  console.error(`Unknown interation ${interaction.commandName} occured.`)
+	}
   }
 });
 
