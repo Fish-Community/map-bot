@@ -1,18 +1,18 @@
 import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
-import config, { gamemodePath } from "../config.js";
+import config, { gamemodePaths } from "../config.js";
 import { getFileListClean } from '../fileops/github.js'
 import { splitReply } from '../utils.js';
 
 export async function maps(interaction: CommandInteraction) {
-    const gamemode = interaction.options.get('gamemode')?.value as string;
-    if(gamemode && config.github.paths.hasOwnProperty(gamemode.toLowerCase())){
-        let gameModeMaps = await getFileListClean(gamemodePath[gamemode])
+    const gamemode = interaction.options.get('gamemode')!.value as string;
+    if(config.github.paths.hasOwnProperty(gamemode)){
+        let gameModeMaps = await getFileListClean(gamemodePaths[gamemode])
         splitReply(interaction, `** Fish ${gamemode} Maps** \n ${gameModeMaps}`);
     }else{
-        let attackMaps = await getFileListClean(gamemodePath['attack']);
-        let survivalMaps = await getFileListClean(gamemodePath['survival']);
-        let pvpMaps = await getFileListClean(gamemodePath['pvp']);
-        let hexedMaps = await getFileListClean(gamemodePath['hexed']);
+        let attackMaps = await getFileListClean(gamemodePaths['attack']);
+        let survivalMaps = await getFileListClean(gamemodePaths['survival']);
+        let pvpMaps = await getFileListClean(gamemodePaths['pvp']);
+        let hexedMaps = await getFileListClean(gamemodePaths['hexed']);
         splitReply(interaction, `## Fish Server Maps\n** Attack Maps**\n${attackMaps}** Survival Maps**\n${survivalMaps}** PvP Maps**\n${pvpMaps}** Hexed Maps**\n${hexedMaps}`);
     }
     

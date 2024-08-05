@@ -2,18 +2,14 @@ import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { addFileAttached } from '../fileops/github.js';
 
 export async function addmap(interaction: CommandInteraction) {
-  const filename = interaction.options.get('filename')?.value as string;
-  const gamemode = interaction.options.get('gamemode')?.value as string;
-  const map = interaction.options.get('map')?.attachment
-  if(map === undefined){
-    interaction.reply(`Map option undefined`)
-    return;
-  }
+  const filename = interaction.options.get('filename')!.value as string;
+  const gamemode = interaction.options.get('gamemode')!.value as string;
+  const map = interaction.options.get('map')!.attachment;
   try {
     addFileAttached(map,gamemode,filename);
-    interaction.reply(`Map ${filename} added to servers.`)
+    interaction.reply(`Map ${filename} added to servers.`);
   } catch (error) {
-    interaction.reply(`Failed to upload map : ${error}`)
+    interaction.reply(`Failed to upload map : ${error}`);
   }
 
 }

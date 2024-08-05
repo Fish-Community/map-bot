@@ -5,4 +5,4 @@ export async function ping(interaction: CommandInteraction) {
 }
 export const pingCommand = new SlashCommandBuilder()
   .setName('ping')
-  .setDescription('Replies with pong')
+  .setDescription('Replies with pong');

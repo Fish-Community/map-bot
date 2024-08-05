@@ -2,9 +2,9 @@ import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { updateFileAttached } from "../fileops/github.js";
 
 export async function updateMap(interaction:CommandInteraction){
-    const filename = interaction.options.get('filename')?.value as string;
-    const gamemode = interaction.options.get('gamemode')?.value as string;
-    const map = interaction.options.get('map')?.attachment
+    const filename = interaction.options.get('filename')!.value as string;
+    const gamemode = interaction.options.get('gamemode')!.value as string;
+    const map = interaction.options.get('map')!.attachment
     try {
         updateFileAttached(map,gamemode,filename);
         await interaction.reply(`Updated stored version of ${filename}`);

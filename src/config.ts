@@ -19,5 +19,5 @@ export const config = {
 		"branch": String(rawConfig.github.branch),
 	}
 }
-export const gamemodePath = config.github.paths;
+export const gamemodePaths = config.github.paths;
 export default config;

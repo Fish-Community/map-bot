@@ -25,3 +25,14 @@ export async function splitReply(interaction: CommandInteraction, message: strin
         await interaction.followUp(messages[i]);
     }
 }
+
+export class Fail extends Error {
+    name = "FailError";
+}
+
+export function fail(message:string):never {
+    throw new Fail(message);
+}
+export function crash(message:string):never {
+    throw new Error(message);
+}
