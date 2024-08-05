@@ -9,6 +9,7 @@ import { addmapCommand } from './commands/addMap.js';
 import { deleteMapCommand } from './commands/deleteMap.js';
 import { renameMapCommand } from './commands/renameMap.js';
 import { updateMapCommand } from './commands/updatemap.js';
+import { crash } from './utils.js';
 
 const commands = [
   pingCommand,
@@ -24,11 +25,12 @@ const rest = new REST({ version: '9' }).setToken(config.discord.token);
 export async function registerCommands() {
   console.log('Started refreshing application (/) commands.');
   const commandsRoute = Routes.applicationCommands(config.discord.appID);
-  const existingCommands = await rest.get(commandsRoute);
-  if (Array.isArray(existingCommands)) {
-      for (const command of existingCommands) {
-          await rest.delete(`${commandsRoute}/${command.id}`);
-      }
+  const existingCommands = (await rest.get(commandsRoute)) as {
+    id: string;
+  }[];
+  if(!Array.isArray(existingCommands)) crash(`Unexpected reponse from discord API: not an array`);
+  for (const command of existingCommands) {
+    await rest.delete(`${commandsRoute}/${command.id}`);
   }
   await rest.put(
     Routes.applicationGuildCommands(config.discord.appID, config.discord.guildID),

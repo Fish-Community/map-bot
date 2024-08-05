@@ -51,6 +51,13 @@ export function Gamemode(input:string):Gamemode {
     fail(`"${input}" is not a valid gamemode`);
 }
 
+/**
+ * @unsafe object must not have any extra properties.
+ **/
+export function getProp<T extends Record<PropertyKey, unknown>>(object:T, key:PropertyKey):T[keyof T] | undefined {
+    return object[key] as never;
+}
+
 export function runFunction(interaction:CommandInteraction, callback:() => Promise<unknown>, successMessage:string){
     return callback()
         .then(() => interaction.reply(successMessage))
