@@ -1,7 +1,7 @@
 import config, { gamemodePaths } from "../config.js";
 import { Octokit } from "@octokit/rest";
 import { Attachment } from "discord.js";
-import { crash, fail } from "../utils.js";
+import { crash, fail, Gamemode } from "../utils.js";
 
 const octokit = new Octokit({
     auth: config.github.key,
@@ -39,11 +39,10 @@ async function getFileList(path = ''): Promise<{ name: string, download_url: str
 /**
  * Fetches file info from the github repository given a filename
  */
-async function getFile(gamemode: string, filename: string){
-    const gamemodePath = gamemodePaths[gamemode] ?? fail(`Invalid gamemode ${gamemode}`);
+async function getFile(gamemode: Gamemode, filename: string){
     const owner = config.github.owner;
     const repo = config.github.repo
-    const path = `${gamemodePath}/${filename}`;
+    const path = `${gamemodePaths[gamemode]}/${filename}`;
     const branch = config.github.branch;
     const res = await octokit.rest.repos.getContent({ owner, repo, path, ref: branch });
     const fileData = Array.isArray(res.data) ? res.data[0] : res.data;
@@ -58,7 +57,7 @@ async function getFileContents(url: string): Promise<Buffer> {
 /**
  * deletes a file from the github repository
  */
-export async function deleteFile(gamemode: string, filename: string): Promise<void> {
+export async function deleteFile(gamemode: Gamemode, filename: string): Promise<void> {
     if (!/^[^/\\]*\.msav$/.test(filename)) fail(`Map files cannot include "\\" or "/" and must end in ".msav"`)
     let fileSha = (await getFile(gamemode, filename))?.sha ?? fail(`Failed to fetch file information`);
     await octokit.rest.repos.deleteFile({
@@ -74,7 +73,7 @@ export async function deleteFile(gamemode: string, filename: string): Promise<vo
 /**
  * Upload a discord attachment to github
  */
-export async function addFileAttached(file: Attachment | undefined, gamemode: string, filename: string) {
+export async function addFileAttached(file: Attachment | undefined, gamemode: Gamemode, filename: string) {
     if (file === undefined) fail(`NULL file attached`) //how?
     if (!/^[A-Za-z]+\.msav/.test(filename)) fail(`Invalid file name. Files must end in .msav and use only letters`) // for convinence, I hate special chars
     let data = await getFileContents(file.url);
@@ -83,7 +82,7 @@ export async function addFileAttached(file: Attachment | undefined, gamemode: st
 /**
  * Uploads buffered data to github
  */
-export async function addFileBuffered(data: Buffer, gamemode: string, filename: string) {
+export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename: string) {
     let sha:string | undefined;
     try {
         sha = (await getFile(gamemode,filename)).sha;
@@ -107,7 +106,7 @@ export async function addFileBuffered(data: Buffer, gamemode: string, filename: 
 /**
  * Addmap but required to override a exsisting file 
  */
-export async function updateFileAttached(file: Attachment | undefined, gamemode: string, filename: string): Promise<void> {
+export async function updateFileAttached(file: Attachment | undefined, gamemode: Gamemode, filename: string): Promise<void> {
     if (!/^[^/\\]*\.msav$/.test(filename)) fail(`Map files cannot include "\\" or "/" and must end in ".msav"`)
     if (file === undefined) fail(`Attached file is undefined.`)
     if (! await getFile(gamemode, filename)) fail(`Unknown map ${filename}, if this is a new map, please upload it with /add_map`);
@@ -116,7 +115,7 @@ export async function updateFileAttached(file: Attachment | undefined, gamemode:
 /***
  * Alter a github file's name
  */
-export async function renameFile(gamemode: string, oldName: string, newName: string) {
+export async function renameFile(gamemode: Gamemode, oldName: string, newName: string) {
     if (!/^[A-Za-z]+\.msav/.test(newName)) fail(`Invalid new file name. Files must end in .msav and use only letters`)
     let res = await getFile(gamemode, oldName);
     if (!res || !res.download_url) fail(`Cannot download file ${oldName}`);
