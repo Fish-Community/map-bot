@@ -14,7 +14,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user?.tag}`);
-    registerCommands()
+    registerCommands().catch(console.error);
 });
 
 client.on('interactionCreate', async (interaction) => {

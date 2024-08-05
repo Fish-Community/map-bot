@@ -22,22 +22,18 @@ const commands = [
 const rest = new REST({ version: '9' }).setToken(config.discord.token);
 
 export async function registerCommands() {
-  try {
-    console.log('Started refreshing application (/) commands.');
-    const commandsRoute = Routes.applicationCommands(config.discord.appID);
-    const existingCommands = await rest.get(commandsRoute);
-    if (Array.isArray(existingCommands)) {
-        for (const command of existingCommands) {
-            await rest.delete(`${commandsRoute}/${command.id}`);
-        }
-    }
-    await rest.put(
-      Routes.applicationGuildCommands(config.discord.appID, config.discord.guildID),
-      { body: commands },
-    );
-
-    console.log('Successfully reloaded application (/) commands.');
-  } catch (error) {
-    console.error(error);
+  console.log('Started refreshing application (/) commands.');
+  const commandsRoute = Routes.applicationCommands(config.discord.appID);
+  const existingCommands = await rest.get(commandsRoute);
+  if (Array.isArray(existingCommands)) {
+      for (const command of existingCommands) {
+          await rest.delete(`${commandsRoute}/${command.id}`);
+      }
   }
+  await rest.put(
+    Routes.applicationGuildCommands(config.discord.appID, config.discord.guildID),
+    { body: commands },
+  );
+
+  console.log('Successfully reloaded application (/) commands.');
 }
