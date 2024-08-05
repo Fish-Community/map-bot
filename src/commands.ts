@@ -28,7 +28,7 @@ export async function registerCommands() {
 	const existingCommands = (await rest.get(commandsRoute)) as {
 		id: string;
 	}[];
-	if(!Array.isArray(existingCommands)) crash(`Unexpected reponse from discord API: not an array`);
+	if (!Array.isArray(existingCommands)) crash(`Unexpected reponse from discord API: not an array`);
 	for (const command of existingCommands) {
 		await rest.delete(`${commandsRoute}/${command.id}`);
 	}

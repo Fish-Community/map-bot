@@ -32,37 +32,37 @@ export class Fail extends Error {
 	name = "FailError";
 }
 
-export function fail(message:string):never {
+export function fail(message: string): never {
 	throw new Fail(message);
 }
-export function crash(message:string):never {
+export function crash(message: string): never {
 	throw new Error(message);
 }
 
-export function capitalize(message:string){
+export function capitalize(message: string) {
 	return message[0].toUpperCase() + message.slice(1);
 }
 
 export const gamemodes = ["attack", "survival", "pvp", "hexed"] as const;
 export type Gamemode = (typeof gamemodes)[number];
-export function Gamemode(input:string):Gamemode {
+export function Gamemode(input: string): Gamemode {
 	input = input.toLowerCase();
-	if(gamemodes.includes(input)) return input;
+	if (gamemodes.includes(input)) return input;
 	fail(`"${input}" is not a valid gamemode`);
 }
 
 /**
  * @unsafe object must not have any extra properties.
  **/
-export function getProp<T extends Record<PropertyKey, unknown>>(object:T, key:PropertyKey):T[keyof T] | undefined {
+export function getProp<T extends Record<PropertyKey, unknown>>(object: T, key: PropertyKey): T[keyof T] | undefined {
 	return object[key] as never;
 }
 
-export function runFunction(interaction:CommandInteraction, callback:() => Promise<unknown>, successMessage:string){
+export function runFunction(interaction: CommandInteraction, callback: () => Promise<unknown>, successMessage: string) {
 	return callback()
 		.then(() => interaction.reply(successMessage))
 		.catch(err => {
-			if(err instanceof Fail){
+			if (err instanceof Fail) {
 				return interaction.reply(`Error: ${err.message}`);
 			} else {
 				console.error(err);
@@ -78,6 +78,6 @@ export const gamemodeChoices = [
 	{ name: "Hexed", value: "hexed" },
 ];
 
-export function gamemodeOption(option:SlashCommandStringOption, description = 'Gamemode of the map to be modified'){
+export function gamemodeOption(option: SlashCommandStringOption, description = 'Gamemode of the map to be modified') {
 	return option.setName('gamemode').setDescription(description).setChoices(gamemodeChoices).setRequired(true);
 }

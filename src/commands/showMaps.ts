@@ -5,10 +5,10 @@ import { gamemodeChoices, gamemodes, splitReply } from '../utils.js';
 
 export async function maps(interaction: CommandInteraction) {
 	const gamemode = interaction.options.get('gamemode')?.value as string;
-	if(gamemodes.includes(gamemode)){
+	if (gamemodes.includes(gamemode)) {
 		let gameModeMaps = await getFileListClean(gamemodePaths[gamemode])
 		await splitReply(interaction, `## Fish ${gamemode} Maps\n${gameModeMaps}`);
-	}else{
+	} else {
 		const [attackMaps, survivalMaps, pvpMaps, hexedMaps] = await Promise.all(
 			gamemodes.map(n => getFileListClean(gamemodePaths[n]))
 		);
@@ -24,7 +24,7 @@ ${pvpMaps}
 ${hexedMaps}`
 		);
 	}
-	
+
 }
 export const showMapCommand = new SlashCommandBuilder()
 	.setName('maps')

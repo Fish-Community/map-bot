@@ -14,24 +14,24 @@ import { getProp } from './utils.js';
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.once('ready', () => {
-  console.log(`Logged in as ${client.user?.tag}`);
-  registerCommands().catch(console.error);
+	console.log(`Logged in as ${client.user?.tag}`);
+	registerCommands().catch(console.error);
 });
 
 const commands = {
-  ping, maps, add_map, delete_map, rename_map, update_map
+	ping, maps, add_map, delete_map, rename_map, update_map
 };
 Object.setPrototypeOf(commands, null); //safety
 
 client.on('interactionCreate', async (interaction) => {
-  if (interaction.isCommand()){
-	const handler = getProp(commands, interaction.commandName);
-	if(handler){
-	  await handler(interaction);
-	} else {
-	  console.error(`Unknown interation ${interaction.commandName} occured.`)
+	if (interaction.isCommand()) {
+		const handler = getProp(commands, interaction.commandName);
+		if (handler) {
+			await handler(interaction);
+		} else {
+			console.error(`Unknown interation ${interaction.commandName} occured.`)
+		}
 	}
-  }
 });
 
 client.login(config.discord.token);

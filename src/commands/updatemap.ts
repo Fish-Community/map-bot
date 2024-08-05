@@ -2,7 +2,7 @@ import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { updateFileAttached } from "../fileops/github.js";
 import { Gamemode, gamemodeOption, runFunction } from "../utils.js";
 
-export async function update_map(interaction:CommandInteraction){
+export async function update_map(interaction: CommandInteraction) {
 	const filename = interaction.options.get('filename')!.value as string;
 	const gamemode = Gamemode(interaction.options.get('gamemode')!.value as string);
 	const map = interaction.options.get('map')!.attachment!;
