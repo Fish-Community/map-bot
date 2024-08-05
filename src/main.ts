@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import config from './config.js';
 
-import { registerCommands } from './commands.js';
+import { checkPerm, registerCommands } from './commands.js';
 import { ping } from './commands/ping.js';
 import { maps } from './commands/showMaps.js'
 import { add_map } from './commands/addMap.js';
@@ -11,7 +11,7 @@ import { update_map } from './commands/updatemap.js';
 import { getProp } from './utils.js';
 
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
 
 client.once('ready', () => {
 	console.log(`Logged in as ${client.user?.tag}`);
@@ -26,7 +26,10 @@ Object.setPrototypeOf(commands, null); //safety
 client.on('interactionCreate', async (interaction) => {
 	if(interaction.guildId !== config.discord.guildID) return; //Only allow running commands in the configured server
 	if (interaction.isCommand()) {
-		const handler = getProp(commands, interaction.commandName);
+		if(!checkPerm(interaction)){
+			await interaction.reply(`You do not have the required permissions to run this command`)
+			return;
+		}		const handler = getProp(commands, interaction.commandName);
 		if (handler) {
 			await handler(interaction);
 		} else {
