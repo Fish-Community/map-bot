@@ -1,4 +1,4 @@
-import { Attachment, CommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { addFileAttached } from '../fileops/github.js';
 
 export async function addmap(interaction: CommandInteraction) {
