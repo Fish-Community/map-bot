@@ -66,7 +66,7 @@ export function runFunction(interaction: CommandInteraction, callback: () => Pro
 				return interaction.reply(`Error: ${err.message}`);
 			} else {
 				console.error(err);
-				return interaction.reply(`__Bot crashed!:__ ${err.toString()}`);
+				return interaction.reply(`__Bot crashed!__ ${err.toString()}`);
 			}
 		})
 }

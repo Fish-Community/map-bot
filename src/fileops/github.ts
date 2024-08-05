@@ -44,9 +44,10 @@ async function getFile(gamemode: Gamemode, filename: string) {
 	const repo = config.github.repo
 	const path = `${gamemodePaths[gamemode]}/${filename}`;
 	const branch = config.github.branch;
-	const res = await octokit.rest.repos.getContent({ owner, repo, path, ref: branch });
+	const res = await octokit.rest.repos.getContent({ owner, repo, path, ref: branch })
+		.catch(() => fail(`File not found`));
 	const fileData = Array.isArray(res.data) ? res.data[0] : res.data;
-	if (fileData.type !== 'file' || !fileData.sha) fail(`File not found (SHA)`);
+	if (fileData.type !== 'file' || !fileData.sha) fail(`File not found`);
 	return { name: fileData.name, download_url: fileData.download_url, sha: fileData.sha };
 }
 async function downloadFile(url: string): Promise<Buffer> {
