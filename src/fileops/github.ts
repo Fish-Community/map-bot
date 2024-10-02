@@ -61,7 +61,10 @@ async function downloadFile(url: string): Promise<Buffer> {
 export async function deleteFile(gamemode: Gamemode, filename: string): Promise<void> {
 	if (!filenameRegex.test(filename))
 		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
-	let fileSha = (await getFile(gamemode, filename))?.sha ?? fail(`Failed to fetch file information`);
+	const fileSha = (
+		await getFile(gamemode, filename)
+			.catch(() => fail(`Unknown map \`${filename}\`. Make sure the filename is spelled correctly.`))
+	).sha ?? fail(`Failed to fetch file information`);
 	await octokit.rest.repos.deleteFile({
 		owner: config.github.owner,
 		repo: config.github.repo,
@@ -125,7 +128,9 @@ export async function renameFile(gamemode: Gamemode, oldName: string, newName: s
 		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
 	if (!filenameRegex.test(oldName))
 		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
-	let res = await getFile(gamemode, oldName);
+	let res = await getFile(gamemode, oldName).catch(() =>
+		fail(`Unknown map \`${oldName}\`. Make sure the filename is spelled correctly.`)
+	);
 	if (!res.download_url) fail(`Download URL missing`);
 	let contents = await downloadFile(res.download_url);
 	await addFileBuffered(contents, gamemode, newName);
