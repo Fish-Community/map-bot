@@ -59,7 +59,8 @@ async function downloadFile(url: string): Promise<Buffer> {
  * deletes a file from the github repository
  */
 export async function deleteFile(gamemode: Gamemode, filename: string): Promise<void> {
-	if (!/^[^/\\]*\.msav$/.test(filename)) fail(`Map files cannot include "\\" or "/" and must end in ".msav"`)
+	if (!filenameRegex.test(filename))
+		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
 	let fileSha = (await getFile(gamemode, filename))?.sha ?? fail(`Failed to fetch file information`);
 	await octokit.rest.repos.deleteFile({
 		owner: config.github.owner,
@@ -109,16 +110,19 @@ export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename
  * Addmap but required to override a exsisting file 
  */
 export async function updateFileAttached(file: Attachment, gamemode: Gamemode, filename: string): Promise<void> {
-	if (!filenameRegex.test(filename)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
-	if (!await getFile(gamemode, filename)) fail(`Unknown map ${filename}, if this is a new map, please upload it with /add_map`);
+	if (!filenameRegex.test(filename))
+		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
+	if (!await getFile(gamemode, filename)) fail(`Unknown map \`${filename}\`. Make sure the filename is spelled correctly. If this is a new map, please upload it with \`/add_map\`.`);
 	await addFileAttached(file, gamemode, filename);
 }
 /***
  * Alter a github file's name
  */
 export async function renameFile(gamemode: Gamemode, oldName: string, newName: string) {
-	if (!filenameRegex.test(newName)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
-	if (!filenameRegex.test(oldName)) fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
+	if (!filenameRegex.test(newName))
+		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
+	if (!filenameRegex.test(oldName))
+		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
 	let res = await getFile(gamemode, oldName);
 	if (!res.download_url) fail(`Download URL missing`);
 	let contents = await downloadFile(res.download_url);

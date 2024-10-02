@@ -67,7 +67,7 @@ export type Gamemode = (typeof gamemodes)[number];
 export function Gamemode(input: string): Gamemode {
 	input = input.toLowerCase();
 	if (gamemodes.includes(input)) return input;
-	fail(`"${input}" is not a valid gamemode`);
+	fail(`"${escapeTextDiscord(input)}" is not a valid gamemode`);
 }
 
 /**
@@ -77,16 +77,22 @@ export function getProp<T extends Record<PropertyKey, unknown>>(object: T, key: 
 	return object[key] as never;
 }
 
+export function escapeTextDiscord(text:string):string {
+	return text.replace(/([*\\_~`|:#])/g, c => '\\' + c);
+}
+
+export function capitalizeWord(text:string):string {
+	if(text.length == 0) return text;
+	return text[0].toUpperCase() + text.slice(1).toLowerCase();
+}
+
 export function runFunction(interaction: CommandInteraction, callback: () => Promise<unknown>, successMessage: string) {
 	return callback()
 		.then(() => interaction.reply(successMessage))
 		.catch(err => {
 			if (err instanceof Fail) {
 				return interaction.reply(`Error: ${err.message}`);
-			} else {
-				console.error(err);
-				return interaction.reply(`__Bot crashed!__ ${err.toString()}`);
-			}
+			} else throw err;
 		})
 }
 
