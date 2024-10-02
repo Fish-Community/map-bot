@@ -1,6 +1,7 @@
 import type { CommandInteraction, SlashCommandStringOption } from "discord.js";
 
 export const filenameRegex = /^[A-Za-z_-]+\.msav$/;
+export const msavHeaderBytes = "msch".split("").map(c => c.charCodeAt(0));
 
 export async function splitReply(interaction: CommandInteraction, message: string) {
 	const maxInitialLength = 2000;
