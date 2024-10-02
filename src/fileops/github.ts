@@ -1,7 +1,7 @@
 import config, { gamemodePaths } from "../config.js";
 import { Octokit } from "@octokit/rest";
 import { Attachment } from "discord.js";
-import { crash, fail, filenameRegex, Gamemode, msavHeaderBytes } from "../utils.js";
+import { crash, fail, filenameRegex, Gamemode, validateFile } from "../utils.js";
 
 const octokit = new Octokit({
 	auth: config.github.key,
@@ -78,9 +78,7 @@ export async function addFileAttached(file: Attachment, gamemode: Gamemode, file
 	if (!filenameRegex.test(filename))
 		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
 	let data = await downloadFile(file.url);
-	const headerBytes = data.subarray(0, 4);
-	if(headerBytes.join(" ") != msavHeaderBytes.join(" "))
-		fail(`Invalid file: the file you have uploaded is not a valid Mindustry map file.`);
+	await validateFile(data);
 	await addFileBuffered(data, gamemode, filename);
 }
 /**

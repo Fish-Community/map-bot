@@ -1,7 +1,25 @@
 import type { CommandInteraction, SlashCommandStringOption } from "discord.js";
+import * as zlib from "node:zlib";
+import { promisify } from "node:util";
 
 export const filenameRegex = /^[A-Za-z_-]+\.msav$/;
-export const msavHeaderBytes = "msch".split("").map(c => c.charCodeAt(0));
+export const msavHeaderBytes = "MSAV".split("").map(c => c.charCodeAt(0));
+const inflate = promisify(zlib.inflate);
+
+
+/** Throws a Fail if the file is not a valid mindustry map file. */
+export async function validateFile(compressedData:Buffer){
+	//Only decompress the first chunk to prevent DOS
+	const firstCompressedChunk = compressedData.subarray(0, 256);
+	const firstChunk = await inflate(firstCompressedChunk, {
+		finishFlush: zlib.constants.Z_SYNC_FLUSH
+	}).catch(() =>
+		fail(`Invalid file: the file you have uploaded is not a valid Mindustry map file: invalid compressed data`)
+	);
+	const headerBytes = firstChunk.subarray(0, 4);
+	if(headerBytes.join(" ") != msavHeaderBytes.join(" "))
+		fail(`Invalid file: the file you have uploaded is not a valid Mindustry map file: invalid header`);
+}
 
 export async function splitReply(interaction: CommandInteraction, message: string) {
 	const maxInitialLength = 2000;
