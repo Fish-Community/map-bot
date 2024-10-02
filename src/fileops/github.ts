@@ -81,6 +81,8 @@ export async function deleteFile(gamemode: Gamemode, filename: string): Promise<
 export async function addFileAttached(file: Attachment, gamemode: Gamemode, filename: string) {
 	if (!filenameRegex.test(filename))
 		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
+	const fileStatus = await getFile(gamemode, filename).catch(() => null);
+	if(fileStatus != null) fail(`File \`${filename}\` already exists. If you want to overwrite this file, please use \`/update_map\`.`);
 	let data = await downloadFile(file.url);
 	await validateFile(data);
 	await addFileBuffered(data, gamemode, filename);
@@ -115,10 +117,12 @@ export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename
 export async function updateFileAttached(file: Attachment, gamemode: Gamemode, filename: string): Promise<void> {
 	if (!filenameRegex.test(filename))
 		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
+	const data = await downloadFile(file.url);
+	await validateFile(data);
 	await getFile(gamemode, filename).catch(() =>
 		fail(`Unknown map \`${filename}\`. Make sure the filename is spelled correctly. If this is a new map, please upload it with \`/add_map\`.`)
 	);
-	await addFileAttached(file, gamemode, filename);
+	await addFileBuffered(data, gamemode, filename);
 }
 /***
  * Alter a github file's name

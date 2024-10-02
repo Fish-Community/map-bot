@@ -88,8 +88,8 @@ export class IndexedRatekeeper<K> {
 	/**
 	* @returns whether an action is allowed.
 	* @param key the key to check the ratelimit for
-	* @param spacing the spacing between action chunks in milliseconds
-	* @param cap the maximum amount of actions per chunk
+	* @param spacing the time for a group of actions
+	* @param cap the number of actions allowed in that time
 	* @param globalSpacing the spacing between all action chunks in milliseconds
 	* @param globalCap the maximum amount of all actions per chunk
 	**/
@@ -108,8 +108,8 @@ export class IndexedRatekeeper<K> {
 	/**
 	* @returns whether an action is allowed.
 	* @param key the key to check the ratelimit for
-	* @param spacing the spacing between action chunks in milliseconds
-	* @param cap the maximum amount of actions per chunk
+	* @param spacing the time for a group of actions
+	* @param cap the number of actions allowed in that time
 	**/
 	allow(key:K, spacing:number, cap:number):boolean {
 		let [occurences, lastTime] = this.rateMap.get(key) ?? [0, 0];
@@ -118,11 +118,12 @@ export class IndexedRatekeeper<K> {
 			occurences = 0;
 			lastTime = Date.now();
 		}
-		occurences ++;
-
-		this.rateMap.set(key, [occurences, lastTime])
-
-		return occurences <= cap
+		const allowed = occurences <= cap;
+		if(allowed){
+			occurences ++;
+			this.rateMap.set(key, [occurences, lastTime])
+		}
+		return allowed;
 	}
 
 }
