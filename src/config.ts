@@ -15,7 +15,7 @@ export const config = {
 			"attack": String(rawConfig.github.paths.attack),
 			"survival": String(rawConfig.github.paths.survival),
 			"pvp": String(rawConfig.github.paths.pvp),
-			"hexed": String(rawConfig.github.paths.hexed),
+			"sandbox": String(rawConfig.github.paths.sandbox),
 		},
 		"branch": String(rawConfig.github.branch),
 	}

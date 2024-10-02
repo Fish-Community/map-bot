@@ -9,7 +9,7 @@ export async function maps(interaction: CommandInteraction) {
 		let gameModeMaps = await getFileListClean(gamemodePaths[gamemode])
 		await splitReply(interaction, `## Fish ${gamemode} Maps\n${gameModeMaps}`);
 	} else {
-		const [attackMaps, survivalMaps, pvpMaps, hexedMaps] = await Promise.all(
+		const [attackMaps, survivalMaps, pvpMaps, sandboxMaps] = await Promise.all(
 			gamemodes.map(n => getFileListClean(gamemodePaths[n]))
 		);
 		await splitReply(interaction,
@@ -20,8 +20,8 @@ ${attackMaps}
 ${survivalMaps}
 ### PvP Maps
 ${pvpMaps}
-### Hexed Maps
-${hexedMaps}`
+### Sandbox Maps
+${sandboxMaps}`
 		);
 	}
 

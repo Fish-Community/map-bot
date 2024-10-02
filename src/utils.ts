@@ -43,7 +43,7 @@ export function capitalize(message: string) {
 	return message[0].toUpperCase() + message.slice(1);
 }
 
-export const gamemodes = ["attack", "survival", "pvp", "hexed"] as const;
+export const gamemodes = ["attack", "survival", "pvp", "sandbox"] as const;
 export type Gamemode = (typeof gamemodes)[number];
 export function Gamemode(input: string): Gamemode {
 	input = input.toLowerCase();
@@ -75,7 +75,7 @@ export const gamemodeChoices = [
 	{ name: "Attack", value: "attack" },
 	{ name: "Survival", value: "survival" },
 	{ name: "PVP", value: "pvp" },
-	{ name: "Hexed", value: "hexed" },
+	{ name: "Sandbox", value: "sandbox" },
 ];
 
 export function gamemodeOption(option: SlashCommandStringOption, description = 'Gamemode of the map to be modified') {
