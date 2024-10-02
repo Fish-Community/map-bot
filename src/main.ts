@@ -31,7 +31,12 @@ client.on('interactionCreate', async (interaction) => {
 			return;
 		}		const handler = getProp(commands, interaction.commandName);
 		if (handler) {
-			await handler(interaction);
+			try {
+				await handler(interaction);
+			} catch(err){
+				interaction.reply(`An error occured while executing the command.`);
+				console.error(err);
+			}
 		} else {
 			console.error(`Unknown interation ${interaction.commandName} occured.`)
 		}
