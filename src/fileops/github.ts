@@ -112,7 +112,9 @@ export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename
 export async function updateFileAttached(file: Attachment, gamemode: Gamemode, filename: string): Promise<void> {
 	if (!filenameRegex.test(filename))
 		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
-	if (!await getFile(gamemode, filename)) fail(`Unknown map \`${filename}\`. Make sure the filename is spelled correctly. If this is a new map, please upload it with \`/add_map\`.`);
+	await getFile(gamemode, filename).catch(() =>
+		fail(`Unknown map \`${filename}\`. Make sure the filename is spelled correctly. If this is a new map, please upload it with \`/add_map\`.`)
+	);
 	await addFileAttached(file, gamemode, filename);
 }
 /***

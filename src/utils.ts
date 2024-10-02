@@ -2,7 +2,7 @@ import type { CommandInteraction, SlashCommandStringOption } from "discord.js";
 import * as zlib from "node:zlib";
 import { promisify } from "node:util";
 
-export const filenameRegex = /^[A-Za-z_-]+\.msav$/;
+export const filenameRegex = /^[A-Za-z0-9_-]+\.msav$/;
 export const msavHeaderBytes = "MSAV".split("").map(c => c.charCodeAt(0));
 const inflate = promisify(zlib.inflate);
 
