@@ -76,7 +76,7 @@ export async function deleteFile(gamemode: Gamemode, filename: string): Promise<
  */
 export async function addFileAttached(file: Attachment, gamemode: Gamemode, filename: string) {
 	if (!filenameRegex.test(filename))
-		fail(`Invalid file name. Filenames must be alphanumeric and only use letters.`);
+		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
 	let data = await downloadFile(file.url);
 	await addFileBuffered(data, gamemode, filename);
 }
