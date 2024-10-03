@@ -5,7 +5,7 @@ import { gamemodeChoices, gamemodes, splitReply } from '../utils.js';
 import { checkPerm } from '../commands.js';
 
 export async function maps(interaction: CommandInteraction) {
-	if(!checkPerm(interaction, "updateOnlyRoleID")){
+	if(!checkPerm(interaction, "update")){
 		await interaction.reply(`You do not have the required permissions to run this command`)
 		return;
 	}

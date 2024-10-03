@@ -4,7 +4,7 @@ import { capitalizeWord, Gamemode, gamemodeOption, runFunction } from '../utils.
 import { checkPerm } from '../commands.js';
 
 export async function delete_map(interaction: CommandInteraction) {
-	if(!checkPerm(interaction, "fullAccessRoleID")){
+	if(!checkPerm(interaction, "fullAccess")){
 		await interaction.reply(`You do not have the required permissions to run this command`);
 		return;
 	}

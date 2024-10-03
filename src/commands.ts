@@ -40,10 +40,14 @@ export async function registerCommands() {
 
 	console.log('Successfully reloaded application (/) commands.');
 }
-export function checkPerm(interaction:CommandInteraction, role:"updateOnlyRoleID" | "fullAccessRoleID"):boolean {
+export function checkPerm(interaction:CommandInteraction, role:"update" | "fullAccess"):boolean {
 	let member = interaction.member as GuildMember;
 	if(member?.roles instanceof GuildMemberRoleManager){
-		return member.roles.cache.has(config.discord[role]);
+		if(role == "fullAccess"){
+			return member.roles.cache.has(config.discord.fullAccessRoleID);
+		} else {
+			return member.roles.cache.has(config.discord.updateOnlyRoleID) || member.roles.cache.has(config.discord.fullAccessRoleID);
+		}
 	} else {
 		console.error(`Out-Of-Date discord.js, please use v13+`);
 		return false;

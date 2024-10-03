@@ -4,7 +4,7 @@ import { capitalizeWord, Gamemode, gamemodeOption, runFunction } from '../utils.
 import { checkPerm } from '../commands.js';
 
 export async function add_map(interaction: CommandInteraction) {
-	if(!checkPerm(interaction, "fullAccessRoleID")){
+	if(!checkPerm(interaction, "fullAccess")){
 		await interaction.reply(`You do not have the required permissions to run this command`);
 		return;
 	}
@@ -23,4 +23,4 @@ export const addmapCommand = new SlashCommandBuilder()
 		option.setName('map').setDescription('mindustry map to upload').setRequired(true))
 	.addStringOption(gamemodeOption)
 	.addStringOption(option =>
-		option.setName('filename').setDescription('filename of the file to upload').setRequired(true))
+		option.setName('filename').setDescription('filename of the file to upload').setRequired(true));
