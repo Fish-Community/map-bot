@@ -132,6 +132,8 @@ export async function renameFile(gamemode: Gamemode, oldName: string, newName: s
 		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
 	if (!filenameRegex.test(oldName))
 		fail(`Invalid file name. Filenames must be alphanumeric and end with \`.msav\`.`);
+	if(newName == oldName)
+		fail(`Filenames must be different.`);
 	let res = await getFile(gamemode, oldName).catch(() =>
 		fail(`Unknown map \`${oldName}\`. Make sure the filename is spelled correctly.`)
 	);
