@@ -109,7 +109,7 @@ export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename
 		content: data.toString('base64'),
 		sha,
 		committer: {
-			email: "<>", //No email
+			email: "_@example.com", //No email
 			name: "Fish-Community",
 		}
 	});
