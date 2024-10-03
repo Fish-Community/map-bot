@@ -6,6 +6,10 @@ import { crash, fail, filenameRegex, Gamemode, validateFile } from "../utils.js"
 const octokit = new Octokit({
 	auth: config.github.key,
 });
+const defaultCommitter = {
+	email: "_@example.com", //No email
+	name: "Fish Map Bot",
+};
 /***
  * wrapper for getFileList(), returns a markdown formatted string listing file information
  */
@@ -71,7 +75,8 @@ export async function deleteFile(gamemode: Gamemode, filename: string): Promise<
 		path: gamemodePaths[gamemode] + "/" + filename,
 		message: `Map ${filename} removed`,
 		sha: fileSha,
-		branch: config.github.branch
+		branch: config.github.branch,
+		committer: defaultCommitter
 	});
 	console.log(`File deleted ${filename}`);
 }
@@ -108,10 +113,7 @@ export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename
 		branch: config.github.branch,
 		content: data.toString('base64'),
 		sha,
-		committer: {
-			email: "_@example.com", //No email
-			name: "Fish-Community",
-		}
+		committer: defaultCommitter
 	});
 	console.log(`Uploaded ${filename} to server`);
 }
