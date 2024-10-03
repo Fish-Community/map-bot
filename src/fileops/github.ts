@@ -69,7 +69,7 @@ export async function deleteFile(gamemode: Gamemode, filename: string): Promise<
 		owner: config.github.owner,
 		repo: config.github.repo,
 		path: gamemodePaths[gamemode] + "/" + filename,
-		message: `Automated Deletion ${filename}`,
+		message: `Map ${filename} removed`,
 		sha: fileSha,
 		branch: config.github.branch
 	});
@@ -104,10 +104,14 @@ export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename
 		owner: config.github.owner,
 		repo: config.github.repo,
 		path: gamemodePaths[gamemode] + "/" + filename,
-		message: `Automatic Upload ${filename}`,
+		message: `Map ${filename} ${sha ? "updated" : "created"}`,
 		branch: config.github.branch,
 		content: data.toString('base64'),
 		sha,
+		committer: {
+			email: "<>", //No email
+			name: "Fish-Community",
+		}
 	});
 	console.log(`Uploaded ${filename} to server`);
 }
