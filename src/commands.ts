@@ -40,12 +40,12 @@ export async function registerCommands() {
 
 	console.log('Successfully reloaded application (/) commands.');
 }
-export function checkPerm(interaction:CommandInteraction):boolean{
-	let member:GuildMember = interaction.member as GuildMember;
-	if(member!.roles instanceof GuildMemberRoleManager){
-		return(member.roles.cache.has(config.discord.roleID))
-	}else{
+export function checkPerm(interaction:CommandInteraction, role:"updateOnlyRoleID" | "fullAccessRoleID"):boolean {
+	let member = interaction.member as GuildMember;
+	if(member?.roles instanceof GuildMemberRoleManager){
+		return member.roles.cache.has(config.discord[role]);
+	} else {
 		console.error(`Out-Of-Date discord.js, please use v13+`);
-		return (false);
+		return false;
 	}
 }

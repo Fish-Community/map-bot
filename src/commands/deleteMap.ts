@@ -1,8 +1,13 @@
 import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { deleteFile } from '../fileops/github.js';
 import { capitalizeWord, Gamemode, gamemodeOption, runFunction } from '../utils.js';
+import { checkPerm } from '../commands.js';
 
 export async function delete_map(interaction: CommandInteraction) {
+	if(!checkPerm(interaction, "fullAccessRoleID")){
+		await interaction.reply(`You do not have the required permissions to run this command`);
+		return;
+	}
 	const filename = interaction.options.get('filename')!.value as string;
 	const gamemode = Gamemode(interaction.options.get('gamemode')!.value as string);
 	await runFunction(interaction,

@@ -2,8 +2,13 @@ import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { gamemodePaths } from "../config.js";
 import { getFileListClean } from '../fileops/github.js'
 import { gamemodeChoices, gamemodes, splitReply } from '../utils.js';
+import { checkPerm } from '../commands.js';
 
 export async function maps(interaction: CommandInteraction) {
+	if(!checkPerm(interaction, "updateOnlyRoleID")){
+		await interaction.reply(`You do not have the required permissions to run this command`)
+		return;
+	}
 	const gamemode = interaction.options.get('gamemode')?.value as string;
 	if (gamemodes.includes(gamemode)) {
 		let gameModeMaps = await getFileListClean(gamemodePaths[gamemode])

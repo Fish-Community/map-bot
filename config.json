@@ -3,7 +3,8 @@
 	    "token": "placeholder",
         "appID" : "placeholder",
         "guildID" : "placeholder",
-        "roleID" : "placeholder"
+        "updateOnlyRoleID": "placeholder",
+        "fullAccessRoleID" : "placeholder"
     },
     "github" : {
         "owner" : "Jurorno9",

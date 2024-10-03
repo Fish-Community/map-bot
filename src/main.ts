@@ -26,10 +26,7 @@ Object.setPrototypeOf(commands, null); //safety
 client.on('interactionCreate', async (interaction) => {
 	if(interaction.guildId !== config.discord.guildID) return; //Only allow running commands in the configured server
 	if (interaction.isCommand()) {
-		if(!checkPerm(interaction)){
-			await interaction.reply(`You do not have the required permissions to run this command`)
-			return;
-		}		const handler = getProp(commands, interaction.commandName);
+		const handler = getProp(commands, interaction.commandName);
 		if (handler) {
 			try {
 				await handler(interaction);

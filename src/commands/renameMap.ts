@@ -1,8 +1,13 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { renameFile } from "../fileops/github.js";
 import { capitalizeWord, Gamemode, gamemodeOption, runFunction } from "../utils.js";
+import { checkPerm } from "../commands.js";
 
 export async function rename_map(interaction: CommandInteraction) {
+	if(!checkPerm(interaction, "updateOnlyRoleID")){
+		await interaction.reply(`You do not have the required permissions to run this command`);
+		return;
+	}
 	const gamemode = Gamemode(interaction.options.get('gamemode')!.value as string);
 	const old_name = interaction.options.get('old_filename')!.value as string;
 	const new_name = interaction.options.get('new_filename')!.value as string;
