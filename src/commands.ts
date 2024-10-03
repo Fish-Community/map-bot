@@ -30,9 +30,9 @@ export async function registerCommands() {
 		id: string;
 	}[];
 	if (!Array.isArray(existingCommands)) crash(`Unexpected reponse from discord API: not an array`);
-	for (const command of existingCommands) {
-		await rest.delete(`${commandsRoute}/${command.id}`);
-	}
+	await Promise.all(existingCommands.map(command =>
+		rest.delete(`${commandsRoute}/${command.id}`)
+	));
 	await rest.put(
 		Routes.applicationGuildCommands(config.discord.appID, config.discord.guildID),
 		{ body: commands },
