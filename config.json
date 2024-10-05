@@ -4,7 +4,8 @@
         "appID" : "placeholder",
         "guildID" : "placeholder",
         "updateOnlyRoleID": "placeholder",
-        "fullAccessRoleID" : "placeholder"
+        "fullAccessRoleID" : "placeholder",
+        "fullAccessRoleID2" : "placeholder"
     },
     "github" : {
         "owner" : "Jurorno9",

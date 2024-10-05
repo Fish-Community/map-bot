@@ -6,6 +6,7 @@ export const config = {
 		"appID": String(rawConfig.discord.appID),
 		"guildID": String(rawConfig.discord.guildID),
 		"fullAccessRoleID" : String(rawConfig.discord.fullAccessRoleID),
+		"fullAccessRoleID2" : String(rawConfig.discord.fullAccessRoleID2),
 		"updateOnlyRoleID" : String(rawConfig.discord.updateOnlyRoleID),
 	},
 	"github": {

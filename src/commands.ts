@@ -44,9 +44,9 @@ export function checkPerm(interaction:CommandInteraction, role:"update" | "fullA
 	let member = interaction.member as GuildMember;
 	if(member?.roles instanceof GuildMemberRoleManager){
 		if(role == "fullAccess"){
-			return member.roles.cache.has(config.discord.fullAccessRoleID);
+			return member.roles.cache.has(config.discord.fullAccessRoleID) || member.roles.cache.has(config.discord.fullAccessRoleID2);
 		} else {
-			return member.roles.cache.has(config.discord.updateOnlyRoleID) || member.roles.cache.has(config.discord.fullAccessRoleID);
+			return member.roles.cache.has(config.discord.updateOnlyRoleID) || member.roles.cache.has(config.discord.fullAccessRoleID) || member.roles.cache.has(config.discord.fullAccessRoleID2);
 		}
 	} else {
 		console.error(`Out-Of-Date discord.js, please use v13+`);
