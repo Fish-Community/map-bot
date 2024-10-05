@@ -78,7 +78,6 @@ export async function deleteFile(gamemode: Gamemode, filename: string): Promise<
 		branch: config.github.branch,
 		committer: defaultCommitter
 	});
-	console.log(`File deleted ${filename}`);
 }
 /**
  * Upload a discord attachment to github
