@@ -73,7 +73,7 @@ export async function deleteFile(gamemode: Gamemode, filename: string): Promise<
 		owner: config.github.owner,
 		repo: config.github.repo,
 		path: gamemodePaths[gamemode] + "/" + filename,
-		message: `Map ${filename} removed`,
+		message: `${gamemode} map ${filename} removed`,
 		sha: fileSha,
 		branch: config.github.branch,
 		committer: defaultCommitter
@@ -108,7 +108,7 @@ export async function addFileBuffered(data: Buffer, gamemode: Gamemode, filename
 		owner: config.github.owner,
 		repo: config.github.repo,
 		path: gamemodePaths[gamemode] + "/" + filename,
-		message: `Map ${filename} ${sha ? "updated" : "created"}`,
+		message: `${gamemode} map ${filename} ${sha ? "updated" : "created"}`,
 		branch: config.github.branch,
 		content: data.toString('base64'),
 		sha,
