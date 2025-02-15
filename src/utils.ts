@@ -64,7 +64,7 @@ export function capitalize(message: string) {
 	return message[0].toUpperCase() + message.slice(1);
 }
 
-export const gamemodes = ["attack", "survival", "pvp", "sandbox"] as const;
+export const gamemodes = ["attack", "survival", "pvp", "sandbox", "hexed"] as const;
 export type Gamemode = (typeof gamemodes)[number];
 export function Gamemode(input: string): Gamemode {
 	input = input.toLowerCase();
