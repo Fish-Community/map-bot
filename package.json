@@ -7,23 +7,20 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "tsc",
 		"watch": "tsc --watch",
-		"start": "node build/main.js"
+		"start": "tsc && node build/main.js"
 	},
 	"keywords": [],
 	"author": "",
 	"type": "module",
 	"license": "ISC",
 	"dependencies": {
-		"@discordjs/rest": "^2.3.0",
-		"@octokit/rest": "^21.0.1",
-		"axios": "^1.7.2",
-		"discord-api-types": "^0.37.93",
-		"discord.js": "^14.15.3",
-		"form-data": "^4.0.0",
-		"ts-node": "^10.9.2",
-		"typescript": "^5.5.4"
+		"@discordjs/rest": "^2.4.3",
+		"@octokit/rest": "^21.1.1",
+		"discord-api-types": "^0.37.119",
+		"discord.js": "^14.18.0"
 	},
 	"devDependencies": {
-		"@types/node": "^22.0.0"
+		"@types/node": "^22.13.4",
+		"typescript": "^5.7.3"
 	}
 }
