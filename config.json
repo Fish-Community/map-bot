@@ -15,7 +15,8 @@
             "attack" : "attack",
             "survival" : "survival",
             "pvp" : "pvp",
-            "sandbox" : "sandbox"
+            "sandbox" : "sandbox",
+            "hexed": "hexed"
         },
         "branch" : "map-bot-tests"
     }
