@@ -171,7 +171,8 @@ export const gamemodeChoices = [
 	{ name: "Survival", value: "survival" },
 	{ name: "PVP", value: "pvp" },
 	{ name: "Sandbox", value: "sandbox" },
-];
+	{ name: "Hexed", value: "hexed" },
+] satisfies Array<{name: string; value: Gamemode}>;
 
 export function gamemodeOption(option: SlashCommandStringOption, description = 'Gamemode of the map to be modified') {
 	return option.setName('gamemode').setDescription(description).setChoices(gamemodeChoices).setRequired(true);
