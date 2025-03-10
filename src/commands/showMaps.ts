@@ -15,7 +15,7 @@ export async function maps(interaction: CommandInteraction) {
 		await splitReply(interaction, `## Fish ${gamemode} Maps\n${gameModeMaps}`);
 	} else {
 		const [attackMaps, survivalMaps, pvpMaps, sandboxMaps, hexedMaps] = await Promise.all(
-			gamemodes.map(n => getFileListClean(gamemodePaths[n]))
+			gamemodes.filter(n => n !== "testsrv").map(n => getFileListClean(gamemodePaths[n]))
 		);
 		await splitReply(interaction,
 `## Fish Server Maps
