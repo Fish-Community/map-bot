@@ -172,7 +172,6 @@ export const gamemodeChoices = [
 	{ name: "PVP", value: "pvp" },
 	{ name: "Sandbox", value: "sandbox" },
 	{ name: "Hexed", value: "hexed" },
-	{ name: "Testing Server", value: "testsrv" },
 ] satisfies Array<{name: string; value: Gamemode}>;
 
 export function gamemodeOption(option: SlashCommandStringOption, description = 'Gamemode of the map to be modified') {
