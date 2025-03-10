@@ -1,12 +1,13 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import config from './config.js';
 
-import { checkPerm, registerCommands } from './commands.js';
-import { ping } from './commands/ping.js';
-import { maps } from './commands/showMaps.js'
+import { registerCommands } from './commands.js';
 import { add_map } from './commands/addMap.js';
 import { delete_map } from './commands/deleteMap.js';
+import { ping } from './commands/ping.js';
 import { rename_map } from './commands/renameMap.js';
+import { maps } from './commands/showMaps.js';
+import { test_map } from './commands/testMap.js';
 import { update_map } from './commands/updatemap.js';
 import { getProp } from './utils.js';
 
@@ -19,7 +20,7 @@ client.once('ready', () => {
 });
 
 const commands = {
-	ping, maps, add_map, delete_map, rename_map, update_map
+	ping, maps, add_map, delete_map, rename_map, update_map, test_map
 };
 Object.setPrototypeOf(commands, null); //safety
 

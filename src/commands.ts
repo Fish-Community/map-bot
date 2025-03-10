@@ -1,16 +1,17 @@
 
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import config from './config.js';
+import { CommandInteraction, GuildMember, GuildMemberRoleManager } from 'discord.js';
 
-import { pingCommand } from './commands/ping.js';
-import { showMapCommand } from './commands/showMaps.js';
+import config from './config.js';
 import { addmapCommand } from './commands/addMap.js';
 import { deleteMapCommand } from './commands/deleteMap.js';
+import { pingCommand } from './commands/ping.js';
 import { renameMapCommand } from './commands/renameMap.js';
+import { showMapCommand } from './commands/showMaps.js';
+import { testmapCommand } from './commands/testMap.js';
 import { updateMapCommand } from './commands/updatemap.js';
 import { crash } from './utils.js';
-import { CommandInteraction, GuildMember, GuildMemberRoleManager } from 'discord.js';
 
 const commands = [
 	pingCommand,
@@ -18,7 +19,8 @@ const commands = [
 	addmapCommand,
 	deleteMapCommand,
 	renameMapCommand,
-	updateMapCommand
+	updateMapCommand,
+	testmapCommand,
 ].map(command => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(config.discord.token);
