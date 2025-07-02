@@ -14,7 +14,7 @@ export async function maps(interaction: CommandInteraction) {
 		let gameModeMaps = await getFileListClean(gamemodePaths[gamemode])
 		await splitReply(interaction, `## Fish ${gamemode} Maps\n${gameModeMaps}`);
 	} else {
-		const [attackMaps, survivalMaps, pvpMaps, sandboxMaps, hexedMaps] = await Promise.all(
+		const [attackMaps, survivalMaps, pvpMaps, sandboxMaps, hexedMaps, minigameMaps] = await Promise.all(
 			gamemodes.filter(n => n !== "testsrv").map(n => getFileListClean(gamemodePaths[n]))
 		);
 		await splitReply(interaction,
@@ -28,7 +28,9 @@ ${pvpMaps}
 ### Sandbox Maps
 ${sandboxMaps}
 ### Hexed Maps
-${hexedMaps}`
+${hexedMaps}
+### Minigame Maps
+${minigameMaps}`
 		);
 	}
 

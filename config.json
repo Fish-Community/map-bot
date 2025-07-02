@@ -17,7 +17,8 @@
             "pvp" : "pvp",
             "sandbox" : "sandbox",
             "hexed": "hexed",
-            "testsrv": "testsrv"
+            "testsrv": "testsrv",
+            "minigame": "minigame"
         },
         "branch" : "map-bot-tests"
     }

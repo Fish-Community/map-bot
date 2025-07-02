@@ -19,6 +19,7 @@ export const config = {
 			"pvp": String(rawConfig.github.paths.pvp),
 			"sandbox": String(rawConfig.github.paths.sandbox),
 			"hexed": String(rawConfig.github.paths.hexed),
+			"minigame": String(rawConfig.github.paths.minigame),
 			"testsrv": String(rawConfig.github.paths.testsrv),
 		},
 		"branch": String(rawConfig.github.branch),
