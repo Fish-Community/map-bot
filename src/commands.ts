@@ -42,13 +42,14 @@ export async function registerCommands() {
 
 	console.log('Successfully reloaded application (/) commands.');
 }
+const updateOnlyRoleIDs = config.discord.updateOnlyRoleIDs.concat(config.discord.fullAccessRoleIDs);
 export function checkPerm(interaction:CommandInteraction, role:"update" | "fullAccess"):boolean {
 	let member = interaction.member as GuildMember;
 	if(member?.roles instanceof GuildMemberRoleManager){
 		if(role == "fullAccess"){
 			return config.discord.fullAccessRoleIDs.some(x => member.roles.cache.has(x));
 		} else {
-			return config.discord.updateOnlyRoleIDs.some(x => member.roles.cache.has(x));
+			return updateOnlyRoleIDs.some(x => member.roles.cache.has(x));
 		}
 	} else {
 		console.error(`Out-Of-Date discord.js, please use v13+`);
