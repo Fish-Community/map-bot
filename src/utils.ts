@@ -150,6 +150,7 @@ const ratekeeper = new IndexedRatekeeper<string>();
 
 export async function runFunction(interaction: CommandInteraction, callback: () => Promise<unknown>, successMessage: string, ratelimit = true) {
 	try {
+		const defer = interaction.deferReply();
 		if(ratelimit){
 			ratekeeper.allow2(
 				interaction.user.id,
@@ -157,11 +158,11 @@ export async function runFunction(interaction: CommandInteraction, callback: () 
 				600_000, 20, //20 commands per 10 minutes for all users globally
 			) || fail(`You've been ratelimited. Please try again in a few minutes.`);
 		}
-		await callback();
-		return await interaction.reply(successMessage);
+		await Promise.all([callback(), defer]);
+		return await interaction.followUp(successMessage);
 	} catch (err) {
 		if (err instanceof Fail) {
-			return interaction.reply(`Error: ${err.message}`);
+			return interaction.followUp(`Error: ${err.message}`);
 		} else throw err;
 	}
 }
