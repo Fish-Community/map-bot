@@ -1,4 +1,4 @@
-import rawConfig from '../config.json' assert {type: 'json'};
+import rawConfig from '../config.json' with {type: 'json'};
 
 export const config = {
 	"discord": {
