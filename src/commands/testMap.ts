@@ -13,7 +13,7 @@ export async function test_map(interaction: CommandInteraction) {
 	const map = interaction.options.get('map')!.attachment!;
 	await runFunction(interaction,
 		() => updateFileAttached(map, gamemode, filename),
-		`Successfully uploaded map \`${filename}\` to the testing server.`
+		`Successfully uploaded map \`${filename}\` to the testing server.\nThe server will check for map updates every 15 minutes. **Run \`/updatemaps\` ingame** to skip the wait.`
 	);
 }
 export const testmapCommand = new SlashCommandBuilder()
