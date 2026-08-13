@@ -11,7 +11,7 @@ const inflate = promisify(zlib.inflate);
 export async function validateFile(compressedData:Buffer){
 	//Only decompress the first chunk to prevent DOS
 	if(compressedData.length > 15 * 1048576)
-		fail(`Invalid file: the file you have uploaded is too big (maximum file size is 1 MiB)`);
+		fail(`Invalid file: the file you have uploaded is too big (maximum file size is 15 MiB)`);
 	const firstCompressedChunk = compressedData.subarray(0, 256);
 	const firstChunk = await inflate(firstCompressedChunk, {
 		finishFlush: zlib.constants.Z_SYNC_FLUSH
