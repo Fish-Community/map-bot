@@ -162,9 +162,7 @@ export async function runFunction(interaction: CommandInteraction, callback: () 
 		return await interaction.followUp(successMessage);
 	} catch (err) {
 		if (err instanceof Fail) {
-			return interaction.reply(`Error: ${err.message}`).catch(e =>
-				interaction.followUp(`Error: ${err.message}`)
-			);
+			return (interaction.replied ? interaction.followUp : interaction.reply)(`Error: ${err.message}`);
 		} else throw err;
 	}
 }
